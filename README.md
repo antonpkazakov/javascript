@@ -1,7 +1,8 @@
-# Airbnb JavaScript Style Guide() {
+# Westwing JavaScript Style Guide() {
 
 *A mostly reasonable approach to JavaScript*
 
+@TODO Upload updated files for ES Lint
 [![Downloads](https://img.shields.io/npm/dm/eslint-config-airbnb.svg)](https://www.npmjs.com/package/eslint-config-airbnb)
 [![Downloads](https://img.shields.io/npm/dm/eslint-config-airbnb-base.svg)](https://www.npmjs.com/package/eslint-config-airbnb-base)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/airbnb/javascript?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
@@ -25,7 +26,7 @@ Other Style Guides
   1. [Arrow Functions](#arrow-functions)
   1. [Classes & Constructors](#classes--constructors)
   1. [Modules](#modules)
-  1. [Iterators and Generators](#iterators-and-generators)
+  1. [Generators](#generators)
   1. [Properties](#properties)
   1. [Variables](#variables)
   1. [Hoisting](#hoisting)
@@ -117,13 +118,13 @@ Other Style Guides
     // bad
     var count = 1;
     if (true) {
-      count += 1;
+        count += 1;
     }
 
     // good, use the let.
     let count = 1;
     if (true) {
-      count += 1;
+        count += 1;
     }
     ```
 
@@ -133,8 +134,8 @@ Other Style Guides
     ```javascript
     // const and let only exist in the blocks they are defined in.
     {
-      let a = 1;
-      const b = 1;
+        let a = 1;
+        const b = 1;
     }
     console.log(a); // ReferenceError
     console.log(b); // ReferenceError
@@ -155,7 +156,7 @@ Other Style Guides
     const item = {};
     ```
 
-  <a name="es6-computed-properties"></a><a name="3.4"></a>
+  <a name="es6-computed-properties"></a><a name="3.2"></a>
   - [3.2](#es6-computed-properties) Use computed property names when creating objects with dynamic property names.
 
     > Why? They allow you to define all the properties of an object in one place.
@@ -163,119 +164,91 @@ Other Style Guides
     ```javascript
 
     function getKey(k) {
-      return `a key named ${k}`;
+        return `a key named ${k}`;
     }
 
     // bad
     const obj = {
-      id: 5,
-      name: 'San Francisco',
+        id: 5,
+        name: 'San Francisco',
     };
     obj[getKey('enabled')] = true;
 
     // good
     const obj = {
-      id: 5,
-      name: 'San Francisco',
-      [getKey('enabled')]: true,
+        id: 5,
+        name: 'San Francisco',
+        [getKey('enabled')]: true,
     };
     ```
 
-  <a name="es6-object-shorthand"></a><a name="3.5"></a>
+  <a name="es6-object-shorthand"></a><a name="3.3"></a>
   - [3.3](#es6-object-shorthand) Use object method shorthand. eslint: [`object-shorthand`](http://eslint.org/docs/rules/object-shorthand.html) jscs: [`requireEnhancedObjectLiterals`](http://jscs.info/rule/requireEnhancedObjectLiterals)
 
     ```javascript
     // bad
     const atom = {
-      value: 1,
+        value: 1,
 
-      addValue: function (value) {
-        return atom.value + value;
-      },
+        addValue: function (value) {
+            return atom.value + value;
+        },
     };
 
     // good
     const atom = {
-      value: 1,
+        value: 1,
 
-      addValue(value) {
-        return atom.value + value;
-      },
+        addValue(value) {
+            return atom.value + value;
+        },
     };
     ```
 
-  <a name="es6-object-concise"></a><a name="3.6"></a>
-  - [3.4](#es6-object-concise) Use property value shorthand. eslint: [`object-shorthand`](http://eslint.org/docs/rules/object-shorthand.html) jscs: [`requireEnhancedObjectLiterals`](http://jscs.info/rule/requireEnhancedObjectLiterals)
+  <a name="es6-object-concise"></a><a name="3.4"></a>
+  - [3.4](#es6-object-concise) Object property-value shorthand is discouraged. eslint: [`object-shorthand`](http://eslint.org/docs/rules/object-shorthand.html) jscs: [`requireEnhancedObjectLiterals`](http://jscs.info/rule/requireEnhancedObjectLiterals)
 
-    > Why? It is shorter to write and descriptive.
+    > Why? It is easier to read and understand.
 
     ```javascript
     const lukeSkywalker = 'Luke Skywalker';
-
+    
     // bad
     const obj = {
-      lukeSkywalker: lukeSkywalker,
+        darth: 'Vader',
+        lukeSkywalker,
     };
-
+    
     // good
     const obj = {
-      lukeSkywalker,
+        darth: 'Vader',
+        lukeSkywalker: lukeSkywalker,
     };
     ```
 
-  <a name="objects--grouped-shorthand"></a><a name="3.7"></a>
-  - [3.5](#objects--grouped-shorthand) Group your shorthand properties at the beginning of your object declaration.
-
-    > Why? It's easier to tell which properties are using the shorthand.
-
-    ```javascript
-    const anakinSkywalker = 'Anakin Skywalker';
-    const lukeSkywalker = 'Luke Skywalker';
-
-    // bad
-    const obj = {
-      episodeOne: 1,
-      twoJediWalkIntoACantina: 2,
-      lukeSkywalker,
-      episodeThree: 3,
-      mayTheFourth: 4,
-      anakinSkywalker,
-    };
-
-    // good
-    const obj = {
-      lukeSkywalker,
-      anakinSkywalker,
-      episodeOne: 1,
-      twoJediWalkIntoACantina: 2,
-      episodeThree: 3,
-      mayTheFourth: 4,
-    };
-    ```
-
-  <a name="objects--quoted-props"></a><a name="3.8"></a>
-  - [3.6](#objects--quoted-props) Only quote properties that are invalid identifiers. eslint: [`quote-props`](http://eslint.org/docs/rules/quote-props.html) jscs: [`disallowQuotedKeysInObjects`](http://jscs.info/rule/disallowQuotedKeysInObjects)
+  <a name="objects--quoted-props"></a><a name="3.5"></a>
+  - [3.5](#objects--quoted-props) Only quote properties that are invalid identifiers. eslint: [`quote-props`](http://eslint.org/docs/rules/quote-props.html) jscs: [`disallowQuotedKeysInObjects`](http://jscs.info/rule/disallowQuotedKeysInObjects)
 
     > Why? In general we consider it subjectively easier to read. It improves syntax highlighting, and is also more easily optimized by many JS engines.
 
     ```javascript
     // bad
     const bad = {
-      'foo': 3,
-      'bar': 4,
-      'data-blah': 5,
+        'foo': 3,
+        'bar': 4,
+        'data-blah': 5,
     };
 
     // good
     const good = {
-      foo: 3,
-      bar: 4,
-      'data-blah': 5,
+        foo: 3,
+        bar: 4,
+        'data-blah': 5,
     };
     ```
 
-  <a name="objects--prototype-builtins"></a>
-  - [3.7](#objects--prototype-builtins) Do not call `Object.prototype` methods directly, such as `hasOwnProperty`, `propertyIsEnumerable`, and `isPrototypeOf`.
+  <a name="objects--prototype-builtins"></a><a name="3.6"></a>
+  - [3.6](#objects--prototype-builtins) Do not call `Object.prototype` methods directly, such as `hasOwnProperty`, `propertyIsEnumerable`, and `isPrototypeOf`.
 
     > Why? These methods may be shadowed by properties on the object in question - consider `{ hasOwnProperty: false }` - or, the object may be a null object (`Object.create(null)`).
 
@@ -294,8 +267,8 @@ Other Style Guides
     console.log(has.call(object, key));
     ```
 
-  <a name="objects--rest-spread"></a>
-  - [3.8](#objects--rest-spread) Prefer the object spread operator over [`Object.assign`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) to shallow-copy objects. Use the object rest operator to get a new object with certain properties omitted.
+  <a name="objects--rest-spread"></a><a name="3.7"></a>
+  - [3.7](#objects--rest-spread) Prefer the object spread operator over [`Object.assign`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) to shallow-copy objects. Use the object rest operator to get a new object with certain properties omitted.
 
     ```javascript
     // very bad
@@ -310,8 +283,6 @@ Other Style Guides
     // good
     const original = { a: 1, b: 2 };
     const copy = { ...original, c: 3 }; // copy => { a: 1, b: 2, c: 3 }
-
-    const { a, ...noA } = copy; // noA => { b: 2, c: 3 }
     ```
 
 **[⬆ back to top](#table-of-contents)**
@@ -352,7 +323,7 @@ Other Style Guides
     let i;
 
     for (i = 0; i < len; i += 1) {
-      itemsCopy[i] = items[i];
+        itemsCopy[i] = items[i];
     }
 
     // good
@@ -373,8 +344,8 @@ Other Style Guides
     ```javascript
     // good
     [1, 2, 3].map((x) => {
-      const y = x + 1;
-      return x * y;
+        const y = x + 1;
+        return x * y;
     });
 
     // good
@@ -383,36 +354,36 @@ Other Style Guides
     // bad
     const flat = {};
     [[0, 1], [2, 3], [4, 5]].reduce((memo, item, index) => {
-      const flatten = memo.concat(item);
-      flat[index] = flatten;
+        const flatten = memo.concat(item);
+        flat[index] = flatten;
     });
 
     // good
     const flat = {};
     [[0, 1], [2, 3], [4, 5]].reduce((memo, item, index) => {
-      const flatten = memo.concat(item);
-      flat[index] = flatten;
-      return flatten;
+        const flatten = memo.concat(item);
+        flat[index] = flatten;
+        return flatten;
     });
 
     // bad
     inbox.filter((msg) => {
-      const { subject, author } = msg;
-      if (subject === 'Mockingbird') {
-        return author === 'Harper Lee';
-      } else {
-        return false;
-      }
+        const { subject, author } = msg;
+        if (subject === 'Mockingbird') {
+            return author === 'Harper Lee';
+        } else {
+            return false;
+        }
     });
 
     // good
     inbox.filter((msg) => {
-      const { subject, author } = msg;
-      if (subject === 'Mockingbird') {
-        return author === 'Harper Lee';
-      }
+        const { subject, author } = msg;
+        if (subject === 'Mockingbird') {
+            return author === 'Harper Lee';
+        }
 
-      return false;
+        return false;
     });
     ```
 
@@ -424,34 +395,34 @@ Other Style Guides
   ```javascript
   // bad
   const arr = [
-    [0, 1], [2, 3], [4, 5],
+      [0, 1], [2, 3], [4, 5],
   ];
 
   const objectInArray = [{
-    id: 1,
+      id: 1,
   }, {
-    id: 2,
+      id: 2,
   }];
 
   const numberInArray = [
-    1, 2,
+      1, 2,
   ];
 
   // good
   const arr = [[0, 1], [2, 3], [4, 5]];
 
   const objectInArray = [
-    {
-      id: 1,
-    },
-    {
-      id: 2,
-    },
+      {
+          id: 1,
+      },
+      {
+          id: 2,
+      },
   ];
 
   const numberInArray = [
-    1,
-    2,
+      1,
+      2,
   ];
   ```
 
@@ -467,21 +438,21 @@ Other Style Guides
     ```javascript
     // bad
     function getFullName(user) {
-      const firstName = user.firstName;
-      const lastName = user.lastName;
+        const firstName = user.firstName;
+        const lastName = user.lastName;
 
-      return `${firstName} ${lastName}`;
+        return `${firstName} ${lastName}`;
     }
 
     // good
     function getFullName(user) {
-      const { firstName, lastName } = user;
-      return `${firstName} ${lastName}`;
+        const { firstName, lastName } = user;
+        return `${firstName} ${lastName}`;
     }
 
     // best
     function getFullName({ firstName, lastName }) {
-      return `${firstName} ${lastName}`;
+        return `${firstName} ${lastName}`;
     }
     ```
 
@@ -507,8 +478,8 @@ Other Style Guides
     ```javascript
     // bad
     function processInput(input) {
-      // then a miracle occurs
-      return [left, right, top, bottom];
+        // then a miracle occurs
+        return [left, right, top, bottom];
     }
 
     // the caller needs to think about the order of return data
@@ -516,8 +487,8 @@ Other Style Guides
 
     // good
     function processInput(input) {
-      // then a miracle occurs
-      return { left, right, top, bottom };
+        // then a miracle occurs
+        return { left, right, top, bottom };
     }
 
     // the caller selects only the data they need
@@ -557,8 +528,8 @@ Other Style Guides
 
     // bad
     const errorMessage = 'This is a super long error that was thrown because ' +
-      'of Batman. When you stop to think about how Batman had anything to do ' +
-      'with this, you would get nowhere fast.';
+        'of Batman. When you stop to think about how Batman had anything to do ' +
+        'with this, you would get nowhere fast.';
 
     // good
     const errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.';
@@ -572,22 +543,22 @@ Other Style Guides
     ```javascript
     // bad
     function sayHi(name) {
-      return 'How are you, ' + name + '?';
+        return 'How are you, ' + name + '?';
     }
 
     // bad
     function sayHi(name) {
-      return ['How are you, ', name, '?'].join();
+        return ['How are you, ', name, '?'].join();
     }
 
     // bad
     function sayHi(name) {
-      return `How are you, ${ name }?`;
+        return `How are you, ${ name }?`;
     }
 
     // good
     function sayHi(name) {
-      return `How are you, ${name}?`;
+        return `How are you, ${name}?`;
     }
     ```
 
@@ -614,24 +585,26 @@ Other Style Guides
 ## Functions
 
   <a name="functions--declarations"></a><a name="7.1"></a>
-  - [7.1](#functions--declarations) Use named function expressions instead of function declarations. eslint: [`func-style`](http://eslint.org/docs/rules/func-style) jscs: [`disallowFunctionDeclarations`](http://jscs.info/rule/disallowFunctionDeclarations)
+  - [7.1](#functions--declarations) Do not use named function expressions, use function declarations instead. eslint: [`func-style`](http://eslint.org/docs/rules/func-style) jscs: [`requireFunctionDeclarations`](http://jscs.info/rule/requireFunctionDeclarations)
+  
+    However, put function declaration where they belong — to the top of the block, as they're hoisted anyway.
 
-    > Why? Function declarations are hoisted, which means that it’s easy - too easy - to reference the function before it is defined in the file. This harms readability and maintainability. If you find that a function’s definition is large or complex enough that it is interfering with understanding the rest of the file, then perhaps it’s time to extract it to its own module! Don’t forget to name the expression - anonymous functions can make it harder to locate the problem in an Error's call stack. ([Discussion](https://github.com/airbnb/javascript/issues/794))
+    > Why? Function declarations are easy to read and understand. Unlike function expressions, they are easy to notice in the code while briefly reading it. 
 
     ```javascript
-    // bad
+    // bad, very bad
+    const foo = function bar() {
+        // ...
+    };
+    
+    // good
     function foo() {
-      // ...
+        // ...
     }
 
-    // bad
+    // okeyish, if you really need it for some reason
     const foo = function () {
-      // ...
-    };
-
-    // good
-    const foo = function bar() {
-      // ...
+        // ...
     };
     ```
 
@@ -643,7 +616,7 @@ Other Style Guides
     ```javascript
     // immediately-invoked function expression (IIFE)
     (function () {
-      console.log('Welcome to the Internet. Please follow me.');
+        console.log('Welcome to the Internet. Please follow me.');
     }());
     ```
 
@@ -656,17 +629,17 @@ Other Style Guides
     ```javascript
     // bad
     if (currentUser) {
-      function test() {
-        console.log('Nope.');
-      }
+        function test() {
+            console.log('Nope.');
+        }
     }
 
     // good
     let test;
     if (currentUser) {
-      test = () => {
-        console.log('Yup.');
-      };
+        test = () => {
+            console.log('Yup.');
+        };
     }
     ```
 
@@ -676,12 +649,12 @@ Other Style Guides
     ```javascript
     // bad
     function foo(name, options, arguments) {
-      // ...
+        // ...
     }
 
     // good
     function foo(name, options, args) {
-      // ...
+        // ...
     }
     ```
 
@@ -693,13 +666,13 @@ Other Style Guides
     ```javascript
     // bad
     function concatenateAll() {
-      const args = Array.prototype.slice.call(arguments);
-      return args.join('');
+        const args = Array.prototype.slice.call(arguments);
+        return args.join('');
     }
 
     // good
     function concatenateAll(...args) {
-      return args.join('');
+        return args.join('');
     }
     ```
 
@@ -709,24 +682,24 @@ Other Style Guides
     ```javascript
     // really bad
     function handleThings(opts) {
-      // No! We shouldn't mutate function arguments.
-      // Double bad: if opts is falsy it'll be set to an object which may
-      // be what you want but it can introduce subtle bugs.
-      opts = opts || {};
-      // ...
+        // No! We shouldn't mutate function arguments.
+        // Double bad: if opts is falsy it'll be set to an object which may
+        // be what you want but it can introduce subtle bugs.
+        opts = opts || {};
+        // ...
     }
 
     // still bad
     function handleThings(opts) {
-      if (opts === void 0) {
-        opts = {};
-      }
-      // ...
+        if (opts === void 0) {
+            opts = {};
+        }
+        // ...
     }
 
     // good
     function handleThings(opts = {}) {
-      // ...
+        // ...
     }
     ```
 
@@ -739,7 +712,7 @@ Other Style Guides
     var b = 1;
     // bad
     function count(a = b++) {
-      console.log(a);
+        console.log(a);
     }
     count();  // 1
     count();  // 2
@@ -753,12 +726,12 @@ Other Style Guides
     ```javascript
     // bad
     function handleThings(opts = {}, name) {
-      // ...
+        // ...
     }
 
     // good
     function handleThings(name, opts = {}) {
-      // ...
+        // ...
     }
     ```
 
@@ -799,12 +772,12 @@ Other Style Guides
     ```javascript
     // bad
     function f1(obj) {
-      obj.key = 1;
+        obj.key = 1;
     }
 
     // good
     function f2(obj) {
-      const key = Object.prototype.hasOwnProperty.call(obj, 'key') ? obj.key : 1;
+        const key = Object.prototype.hasOwnProperty.call(obj, 'key') ? obj.key : 1;
     }
     ```
 
@@ -816,23 +789,23 @@ Other Style Guides
     ```javascript
     // bad
     function f1(a) {
-      a = 1;
-      // ...
+        a = 1;
+        // ...
     }
 
     function f2(a) {
-      if (!a) { a = 1; }
-      // ...
+        if (!a) { a = 1; }
+        // ...
     }
 
     // good
     function f3(a) {
-      const b = a || 1;
-      // ...
+        const b = a || 1;
+        // ...
     }
 
     function f4(a = 1) {
-      // ...
+        // ...
     }
     ```
 
@@ -865,28 +838,28 @@ Other Style Guides
     function foo(bar,
                  baz,
                  quux) {
-      // ...
+        // ...
     }
 
     // good
     function foo(
-      bar,
-      baz,
-      quux,
+        bar,
+        baz,
+        quux,
     ) {
-      // ...
+        // ...
     }
 
     // bad
     console.log(foo,
-      bar,
-      baz);
+        bar,
+        baz);
 
     // good
     console.log(
-      foo,
-      bar,
-      baz,
+        foo,
+        bar,
+        baz,
     );
     ```
 
@@ -895,107 +868,53 @@ Other Style Guides
 ## Arrow Functions
 
   <a name="arrows--use-them"></a><a name="8.1"></a>
-  - [8.1](#arrows--use-them) When you must use function expressions (as when passing an anonymous function), use arrow function notation. eslint: [`prefer-arrow-callback`](http://eslint.org/docs/rules/prefer-arrow-callback.html), [`arrow-spacing`](http://eslint.org/docs/rules/arrow-spacing.html) jscs: [`requireArrowFunctions`](http://jscs.info/rule/requireArrowFunctions)
+  - [8.1](#arrows--use-them) Use arrow functions only if you really need them
 
-    > Why? It creates a version of the function that executes in the context of `this`, which is usually what you want, and is a more concise syntax.
+    > Why? The problem of this notation is that, promptly peeking in some piece of code, one can hardly notice all of them, because they are too similar to comparison operators <= and >= and may be too small (e.g. `number => number + 1`). This decreases readability of the code significantly. Hence the decrease in maintainability as well.
 
-    > Why not? If you have a fairly complicated function, you might move that logic out into its own function declaration.
-
-    ```javascript
-    // bad
-    [1, 2, 3].map(function (x) {
-      const y = x + 1;
-      return x * y;
-    });
-
-    // good
-    [1, 2, 3].map((x) => {
-      const y = x + 1;
-      return x * y;
-    });
-    ```
-
-  <a name="arrows--implicit-return"></a><a name="8.2"></a>
-  - [8.2](#arrows--implicit-return) If the function body consists of a single expression, omit the braces and use the implicit return. Otherwise, keep the braces and use a `return` statement. eslint: [`arrow-parens`](http://eslint.org/docs/rules/arrow-parens.html), [`arrow-body-style`](http://eslint.org/docs/rules/arrow-body-style.html) jscs:  [`disallowParenthesesAroundArrowParam`](http://jscs.info/rule/disallowParenthesesAroundArrowParam), [`requireShorthandArrowFunctions`](http://jscs.info/rule/requireShorthandArrowFunctions)
-
-    > Why? Syntactic sugar. It reads well when multiple functions are chained together.
+    > However, if we need to bind `this` of the parent scope to the function scope, arrow notation works better then implicit `.bind(this)` as it's more transparent the the latter which is written at the end of the function declaration.
 
     ```javascript
-    // bad
-    [1, 2, 3].map(number => {
-      const nextNumber = number + 1;
-      `A string containing the ${nextNumber}.`;
-    });
-
-    // good
-    [1, 2, 3].map(number => `A string containing the ${number}.`);
-
-    // good
-    [1, 2, 3].map((number) => {
-      const nextNumber = number + 1;
-      return `A string containing the ${nextNumber}.`;
-    });
-
-    // good
+    // bad, very bad, it takes 15-20 seconds to read 3 damn lines of code!
     [1, 2, 3].map((number, index) => ({
-      [index]: number,
+        [index]: number,
     }));
-    ```
-
-  <a name="arrows--paren-wrap"></a><a name="8.3"></a>
-  - [8.3](#arrows--paren-wrap) In case the expression spans over multiple lines, wrap it in parentheses for better readability.
-
-    > Why? It shows clearly where the function starts and ends.
-
-    ```javascript
-    // bad
-    ['get', 'post', 'put'].map(httpMethod => Object.prototype.hasOwnProperty.call(
-        httpMagicObjectWithAVeryLongName,
-        httpMethod,
-      )
-    );
-
-    // good
-    ['get', 'post', 'put'].map(httpMethod => (
-      Object.prototype.hasOwnProperty.call(
-        httpMagicObjectWithAVeryLongName,
-        httpMethod,
-      )
-    ));
-    ```
-
-  <a name="arrows--one-arg-parens"></a><a name="8.4"></a>
-  - [8.4](#arrows--one-arg-parens) If your function takes a single argument and doesn’t use braces, omit the parentheses. Otherwise, always include parentheses around arguments for clarity and consistency. Note: it is also acceptable to always use parentheses, in which case use the ["always" option](http://eslint.org/docs/rules/arrow-parens#always) for eslint or do not include [`disallowParenthesesAroundArrowParam`](http://jscs.info/rule/disallowParenthesesAroundArrowParam) for jscs. eslint: [`arrow-parens`](http://eslint.org/docs/rules/arrow-parens.html) jscs:  [`disallowParenthesesAroundArrowParam`](http://jscs.info/rule/disallowParenthesesAroundArrowParam)
-
-    > Why? Less visual clutter.
-
-    ```javascript
-    // bad
-    [1, 2, 3].map((x) => x * x);
-
-    // good
-    [1, 2, 3].map(x => x * x);
-
-    // good
-    [1, 2, 3].map(number => (
-      `A long string with the ${number}. It’s so long that we don’t want it to take up space on the .map line!`
-    ));
-
-    // bad
-    [1, 2, 3].map(x => {
-      const y = x + 1;
-      return x * y;
+    
+    
+    // good, because we see the structure of this statement, we can easily read it in 5 seconds
+    [1, 2, 3].map(function (number, index) {
+        return {
+            [index]: number,
+        };
     });
-
+    
+    
+    // bad
+    class JediEmotions {
+        // ...
+        bindEvents() {
+            $(document).on('LukeImYourFather', function () {
+                this.scream('Noooooo!');
+                this.cry();
+            }.bind(this));
+        }
+    }
+    
+    
     // good
-    [1, 2, 3].map((x) => {
-      const y = x + 1;
-      return x * y;
-    });
+    class JediEmotions {
+        // ...
+        bindEvents() {
+            $(document).on('LukeImYourFather', () => {
+                this.scream('Noooooo!');
+                this.cry();
+            });
+        }
+    }
     ```
 
-  <a name="arrows--confusing"></a><a name="8.5"></a>
-  - [8.5](#arrows--confusing) Avoid confusing arrow function syntax (`=>`) with comparison operators (`<=`, `>=`). eslint: [`no-confusing-arrow`](http://eslint.org/docs/rules/no-confusing-arrow)
+  <a name="arrows--confusing"></a><a name="8.2"></a>
+  - [8.2](#arrows--confusing) If you use arrow functions for a reason, avoid confusing arrow function syntax (`=>`) with comparison operators (`<=`, `>=`). eslint: [`no-confusing-arrow`](http://eslint.org/docs/rules/no-confusing-arrow)
 
     ```javascript
     // bad
@@ -1009,8 +928,8 @@ Other Style Guides
 
     // good
     const itemHeight = (item) => {
-      const { height, largeSize, smallSize } = item;
-      return height > 256 ? largeSize : smallSize;
+        const { height, largeSize, smallSize } = item;
+        return height > 256 ? largeSize : smallSize;
     };
     ```
 
@@ -1027,25 +946,25 @@ Other Style Guides
     ```javascript
     // bad
     function Queue(contents = []) {
-      this.queue = [...contents];
+        this.queue = [...contents];
     }
     Queue.prototype.pop = function () {
-      const value = this.queue[0];
-      this.queue.splice(0, 1);
-      return value;
+        const value = this.queue[0];
+        this.queue.splice(0, 1);
+        return value;
     };
 
 
     // good
     class Queue {
-      constructor(contents = []) {
-        this.queue = [...contents];
-      }
-      pop() {
-        const value = this.queue[0];
-        this.queue.splice(0, 1);
-        return value;
-      }
+        constructor(contents = []) {
+            this.queue = [...contents];
+        }
+        pop() {
+            const value = this.queue[0];
+            this.queue.splice(0, 1);
+            return value;
+        }
     }
     ```
 
@@ -1058,18 +977,18 @@ Other Style Guides
     // bad
     const inherits = require('inherits');
     function PeekableQueue(contents) {
-      Queue.apply(this, contents);
+        Queue.apply(this, contents);
     }
     inherits(PeekableQueue, Queue);
     PeekableQueue.prototype.peek = function () {
-      return this.queue[0];
+        return this.queue[0];
     };
 
     // good
     class PeekableQueue extends Queue {
-      peek() {
-        return this.queue[0];
-      }
+        peek() {
+            return this.queue[0];
+        }
     }
     ```
 
@@ -1079,12 +998,12 @@ Other Style Guides
     ```javascript
     // bad
     Jedi.prototype.jump = function () {
-      this.jumping = true;
-      return true;
+        this.jumping = true;
+        return true;
     };
 
     Jedi.prototype.setHeight = function (height) {
-      this.height = height;
+        this.height = height;
     };
 
     const luke = new Jedi();
@@ -1093,21 +1012,21 @@ Other Style Guides
 
     // good
     class Jedi {
-      jump() {
-        this.jumping = true;
-        return this;
-      }
+        jump() {
+            this.jumping = true;
+            return this;
+        }
 
-      setHeight(height) {
-        this.height = height;
-        return this;
-      }
+        setHeight(height) {
+            this.height = height;
+            return this;
+        }
     }
 
     const luke = new Jedi();
 
     luke.jump()
-      .setHeight(20);
+        .setHeight(20);
     ```
 
 
@@ -1116,17 +1035,17 @@ Other Style Guides
 
     ```javascript
     class Jedi {
-      constructor(options = {}) {
-        this.name = options.name || 'no name';
-      }
+        constructor(options = {}) {
+            this.name = options.name || 'no name';
+        }
 
-      getName() {
-        return this.name;
-      }
+        getName() {
+            return this.name;
+        }
 
-      toString() {
-        return `Jedi - ${this.getName()}`;
-      }
+        toString() {
+            return `Jedi - ${this.getName()}`;
+        }
     }
     ```
 
@@ -1136,26 +1055,26 @@ Other Style Guides
     ```javascript
     // bad
     class Jedi {
-      constructor() {}
+        constructor() {}
 
-      getName() {
-        return this.name;
-      }
+        getName() {
+            return this.name;
+        }
     }
 
     // bad
     class Rey extends Jedi {
-      constructor(...args) {
-        super(...args);
-      }
+        constructor(...args) {
+            super(...args);
+        }
     }
 
     // good
     class Rey extends Jedi {
-      constructor(...args) {
-        super(...args);
-        this.name = 'Rey';
-      }
+        constructor(...args) {
+            super(...args);
+            this.name = 'Rey';
+        }
     }
     ```
 
@@ -1167,18 +1086,18 @@ Other Style Guides
     ```javascript
     // bad
     class Foo {
-      bar() { return 1; }
-      bar() { return 2; }
+        bar() { return 1; }
+        bar() { return 2; }
     }
 
     // good
     class Foo {
-      bar() { return 1; }
+        bar() { return 1; }
     }
 
     // good
     class Foo {
-      bar() { return 2; }
+        bar() { return 2; }
     }
     ```
 
@@ -1252,8 +1171,8 @@ Other Style Guides
 
     // good
     import foo, {
-      named1,
-      named2,
+        named1,
+        named2,
     } from 'foo';
     ```
 
@@ -1314,11 +1233,11 @@ Other Style Guides
 
     // good
     import {
-      longNameA,
-      longNameB,
-      longNameC,
-      longNameD,
-      longNameE,
+        longNameA,
+        longNameB,
+        longNameC,
+        longNameD,
+        longNameE,
     } from 'path';
     ```
 
@@ -1339,111 +1258,71 @@ Other Style Guides
 
 **[⬆ back to top](#table-of-contents)**
 
-## Iterators and Generators
+## Generators
 
-  <a name="iterators--nope"></a><a name="11.1"></a>
-  - [11.1](#iterators--nope) Don't use iterators. Prefer JavaScript's higher-order functions instead of loops like `for-in` or `for-of`. eslint: [`no-iterator`](http://eslint.org/docs/rules/no-iterator.html) [`no-restricted-syntax`](http://eslint.org/docs/rules/no-restricted-syntax)
-
-    > Why? This enforces our immutable rule. Dealing with pure functions that return values is easier to reason about than side effects.
-
-    > Use `map()` / `every()` / `filter()` / `find()` / `findIndex()` / `reduce()` / `some()` / ... to iterate over arrays, and `Object.keys()` / `Object.values()` / `Object.entries()` to produce arrays so you can iterate over objects.
-
-    ```javascript
-    const numbers = [1, 2, 3, 4, 5];
-
-    // bad
-    let sum = 0;
-    for (let num of numbers) {
-      sum += num;
-    }
-    sum === 15;
-
-    // good
-    let sum = 0;
-    numbers.forEach(num => sum += num);
-    sum === 15;
-
-    // best (use the functional force)
-    const sum = numbers.reduce((total, num) => total + num, 0);
-    sum === 15;
-
-    // bad
-    const increasedByOne = [];
-    for (let i = 0; i < numbers.length; i++) {
-      increasedByOne.push(numbers[i] + 1);
-    }
-
-    // good
-    const increasedByOne = [];
-    numbers.forEach(num => increasedByOne.push(num + 1));
-
-    // best (keeping it functional)
-    const increasedByOne = numbers.map(num => num + 1);
-    ```
-
-  <a name="generators--nope"></a><a name="11.2"></a>
-  - [11.2](#generators--nope) Don't use generators for now.
+  <a name="generators--nope"></a><a name="11.1"></a>
+  - [11.1](#generators--nope) Don't use generators for now.
 
     > Why? They don't transpile well to ES5.
 
-  <a name="generators--spacing"></a>
-  - [11.3](#generators--spacing) If you must use generators, or if you disregard [our advice](#generators--nope), make sure their function signature is spaced properly. eslint: [`generator-star-spacing`](http://eslint.org/docs/rules/generator-star-spacing)
+  <a name="generators--spacing"></a><a name="11.2"></a>
+  - [11.2](#generators--spacing) If you must use generators, or if you disregard [our advice](#generators--nope), make sure their function signature is spaced properly. eslint: [`generator-star-spacing`](http://eslint.org/docs/rules/generator-star-spacing)
 
     > Why? `function` and `*` are part of the same conceptual keyword - `*` is not a modifier for `function`, `function*` is a unique construct, different from `function`.
 
     ```javascript
     // bad
     function * foo() {
-      // ...
+        // ...
     }
 
     // bad
     const bar = function * () {
-      // ...
+        // ...
     };
 
     // bad
     const baz = function *() {
-      // ...
+        // ...
     };
 
     // bad
     const quux = function*() {
-      // ...
+        // ...
     };
 
     // bad
     function*foo() {
-      // ...
+        // ...
     }
 
     // bad
     function *foo() {
-      // ...
+        // ...
     }
 
     // very bad
     function
     *
     foo() {
-      // ...
+        // ...
     }
 
     // very bad
     const wat = function
     *
     () {
-      // ...
+        // ...
     };
 
     // good
     function* foo() {
-      // ...
+        // ...
     }
 
     // good
     const foo = function* () {
-      // ...
+        // ...
     };
     ```
 
@@ -1457,8 +1336,8 @@ Other Style Guides
 
     ```javascript
     const luke = {
-      jedi: true,
-      age: 28,
+        jedi: true,
+        age: 28,
     };
 
     // bad
@@ -1473,12 +1352,12 @@ Other Style Guides
 
     ```javascript
     const luke = {
-      jedi: true,
-      age: 28,
+        jedi: true,
+        age: 28,
     };
 
     function getProp(prop) {
-      return luke[prop];
+        return luke[prop];
     }
 
     const isJedi = getProp('jedi');
@@ -1557,34 +1436,34 @@ Other Style Guides
     ```javascript
     // bad - unnecessary function call
     function checkName(hasName) {
-      const name = getName();
+        const name = getName();
 
-      if (hasName === 'test') {
-        return false;
-      }
+        if (hasName === 'test') {
+            return false;
+        }
 
-      if (name === 'test') {
-        this.setName('');
-        return false;
-      }
+        if (name === 'test') {
+            this.setName('');
+            return false;
+        }
 
-      return name;
+        return name;
     }
 
     // good
     function checkName(hasName) {
-      if (hasName === 'test') {
-        return false;
-      }
+        if (hasName === 'test') {
+            return false;
+        }
 
-      const name = getName();
+        const name = getName();
 
-      if (name === 'test') {
-        this.setName('');
-        return false;
-      }
+        if (name === 'test') {
+            this.setName('');
+            return false;
+        }
 
-      return name;
+        return name;
     }
     ```
   <a name="variables--no-chain-assignment"></a><a name="13.5"></a>
@@ -1595,11 +1474,11 @@ Other Style Guides
     ```javascript
     // bad
     (function example() {
-      // JavaScript interprets this as
-      // let a = ( b = ( c = 1 ) );
-      // The let keyword only applies to variable a; variables b and c become
-      // global variables.
-      let a = b = c = 1;
+        // JavaScript interprets this as
+        // let a = ( b = ( c = 1 ) );
+        // The let keyword only applies to variable a; variables b and c become
+        // global variables.
+        let a = b = c = 1;
     }());
 
     console.log(a); // undefined
@@ -1608,9 +1487,9 @@ Other Style Guides
 
     // good
     (function example() {
-      let a = 1;
-      let b = a;
-      let c = a;
+        let a = 1;
+        let b = a;
+        let c = a;
     }());
 
     console.log(a); // undefined
@@ -1636,11 +1515,11 @@ Other Style Guides
     let sum = 0;
     let truthyCount = 0;
     for (let i = 0; i < array.length; i++) {
-      let value = array[i];
-      sum += value;
-      if (value) {
-        truthyCount++;
-      }
+        let value = array[i];
+        sum += value;
+        if (value) {
+            truthyCount++;
+        }
     }
 
     // good
@@ -1666,7 +1545,7 @@ Other Style Guides
     // we know this wouldn't work (assuming there
     // is no notDefined global variable)
     function example() {
-      console.log(notDefined); // => throws a ReferenceError
+        console.log(notDefined); // => throws a ReferenceError
     }
 
     // creating a variable declaration after you
@@ -1674,24 +1553,24 @@ Other Style Guides
     // variable hoisting. Note: the assignment
     // value of `true` is not hoisted.
     function example() {
-      console.log(declaredButNotAssigned); // => undefined
-      var declaredButNotAssigned = true;
+        console.log(declaredButNotAssigned); // => undefined
+        var declaredButNotAssigned = true;
     }
 
     // the interpreter is hoisting the variable
     // declaration to the top of the scope,
     // which means our example could be rewritten as:
     function example() {
-      let declaredButNotAssigned;
-      console.log(declaredButNotAssigned); // => undefined
-      declaredButNotAssigned = true;
+        let declaredButNotAssigned;
+        console.log(declaredButNotAssigned); // => undefined
+        declaredButNotAssigned = true;
     }
 
     // using const and let
     function example() {
-      console.log(declaredButNotAssigned); // => throws a ReferenceError
-      console.log(typeof declaredButNotAssigned); // => throws a ReferenceError
-      const declaredButNotAssigned = true;
+        console.log(declaredButNotAssigned); // => throws a ReferenceError
+        console.log(typeof declaredButNotAssigned); // => throws a ReferenceError
+        const declaredButNotAssigned = true;
     }
     ```
 
@@ -1700,13 +1579,13 @@ Other Style Guides
 
     ```javascript
     function example() {
-      console.log(anonymous); // => undefined
+        console.log(anonymous); // => undefined
 
-      anonymous(); // => TypeError anonymous is not a function
+        anonymous(); // => TypeError anonymous is not a function
 
-      var anonymous = function () {
-        console.log('anonymous function expression');
-      };
+        var anonymous = function () {
+            console.log('anonymous function expression');
+        };
     }
     ```
 
@@ -1715,27 +1594,27 @@ Other Style Guides
 
     ```javascript
     function example() {
-      console.log(named); // => undefined
+        console.log(named); // => undefined
 
-      named(); // => TypeError named is not a function
+        named(); // => TypeError named is not a function
 
-      superPower(); // => ReferenceError superPower is not defined
+        superPower(); // => ReferenceError superPower is not defined
 
-      var named = function superPower() {
-        console.log('Flying');
-      };
+        var named = function superPower() {
+            console.log('Flying');
+        };
     }
 
     // the same is true when the function name
     // is the same as the variable name.
     function example() {
-      console.log(named); // => undefined
+        console.log(named); // => undefined
 
-      named(); // => TypeError named is not a function
+        named(); // => TypeError named is not a function
 
-      var named = function named() {
-        console.log('named');
-      };
+        var named = function named() {
+            console.log('named');
+        };
     }
     ```
 
@@ -1744,11 +1623,11 @@ Other Style Guides
 
     ```javascript
     function example() {
-      superPower(); // => Flying
+        superPower(); // => Flying
 
-      function superPower() {
-        console.log('Flying');
-      }
+        function superPower() {
+            console.log('Flying');
+        }
     }
     ```
 
@@ -1774,43 +1653,45 @@ Other Style Guides
 
     ```javascript
     if ([0] && []) {
-      // true
-      // an array (even an empty one) is an object, objects will evaluate to true
+        // true
+        // an array (even an empty one) is an object, objects will evaluate to true
     }
     ```
 
   <a name="comparison--shortcuts"></a><a name="15.3"></a>
-  - [15.3](#comparison--shortcuts) Use shortcuts for booleans, but explicit comparisons for strings and numbers.
+  - [15.3](#comparison--shortcuts) Use shortcuts for booleans, but explicit comparisons for strings and both for numbers.
+    
+    > Why? An expression like `isValid === true` is useless and horrible. With integer values we can both check them with shortcuts and with comparisons, as they evaluate to `true` or `false` in a very straight forward way. Whereas checking if a string is empty should be an explicit comparison to avoid situations when the string is `'0'` and it evaluated to `true`, but it's not so visible in the code that there can be a mistake of that kind.
 
     ```javascript
     // bad
     if (isValid === true) {
-      // ...
+        // ...
     }
 
     // good
     if (isValid) {
-      // ...
+        // ...
     }
 
     // bad
     if (name) {
-      // ...
+        // ...
     }
 
     // good
     if (name !== '') {
-      // ...
-    }
-
-    // bad
-    if (collection.length) {
-      // ...
+        // ...
     }
 
     // good
     if (collection.length > 0) {
-      // ...
+        // ...
+    }
+
+    // also good
+    if (collection.length) {
+        // ...
     }
     ```
 
@@ -1827,43 +1708,43 @@ Other Style Guides
     ```javascript
     // bad
     switch (foo) {
-      case 1:
-        let x = 1;
-        break;
-      case 2:
-        const y = 2;
-        break;
-      case 3:
-        function f() {
+        case 1:
+            let x = 1;
+            break;
+        case 2:
+            const y = 2;
+            break;
+        case 3:
+            function f() {
           // ...
-        }
-        break;
-      default:
-        class C {}
+            }
+            break;
+        default:
+            class C {}
     }
 
     // good
     switch (foo) {
-      case 1: {
-        let x = 1;
-        break;
-      }
-      case 2: {
-        const y = 2;
-        break;
-      }
-      case 3: {
-        function f() {
-          // ...
+        case 1: {
+            let x = 1;
+            break;
         }
-        break;
-      }
-      case 4:
-        bar();
-        break;
-      default: {
-        class C {}
-      }
+        case 2: {
+            const y = 2;
+            break;
+        }
+        case 3: {
+            function f() {
+          // ...
+            }
+            break;
+        }
+        case 4:
+            bar();
+            break;
+        default: {
+            class C {}
+        }
     }
     ```
 
@@ -1875,15 +1756,15 @@ Other Style Guides
     ```javascript
     // bad
     const foo = maybe1 > maybe2
-      ? "bar"
-      : value1 > value2 ? "baz" : null;
+        ? "bar"
+        : value1 > value2 ? "baz" : null;
 
     // better
     const maybeNull = value1 > value2 ? 'baz' : null;
 
     const foo = maybe1 > maybe2
-      ? 'bar'
-      : maybeNull;
+        ? 'bar'
+        : maybeNull;
 
     // best
     const maybeNull = value1 > value2 ? 'baz' : null;
@@ -1914,19 +1795,21 @@ Other Style Guides
 ## Blocks
 
   <a name="blocks--braces"></a><a name="16.1"></a>
-  - [16.1](#blocks--braces) Use braces with all multi-line blocks.
+  - [16.1](#blocks--braces) Use braces with all blocks.
+    
+    > Why? It makes the blocks clearly visible and increases readability of your code.
 
     ```javascript
     // bad
     if (test)
-      return false;
+        return false;
 
-    // good
+    // bad
     if (test) return false;
 
     // good
     if (test) {
-      return false;
+        return false;
     }
 
     // bad
@@ -1934,7 +1817,7 @@ Other Style Guides
 
     // good
     function bar() {
-      return false;
+        return false;
     }
     ```
 
@@ -1944,19 +1827,19 @@ Other Style Guides
     ```javascript
     // bad
     if (test) {
-      thing1();
-      thing2();
+        thing1();
+        thing2();
     }
     else {
-      thing3();
+        thing3();
     }
 
     // good
     if (test) {
-      thing1();
-      thing2();
+        thing1();
+        thing2();
     } else {
-      thing3();
+        thing3();
     }
     ```
 
@@ -1972,49 +1855,58 @@ Other Style Guides
     ```javascript
     // bad
     if ((foo === 123 || bar === 'abc') && doesItLookGoodWhenItBecomesThatLong() && isThisReallyHappening()) {
-      thing1();
+        thing1();
     }
 
     // bad
     if (foo === 123 &&
-      bar === 'abc') {
-      thing1();
+        bar === 'abc') {
+        thing1();
     }
 
     // bad
     if (foo === 123
-      && bar === 'abc') {
-      thing1();
+        && bar === 'abc') {
+        thing1();
     }
 
     // good
     if (
-      (foo === 123 || bar === "abc") &&
-      doesItLookGoodWhenItBecomesThatLong() &&
-      isThisReallyHappening()
+        (foo === 123 || bar === "abc") &&
+        doesItLookGoodWhenItBecomesThatLong() &&
+        isThisReallyHappening()
     ) {
-      thing1();
+        thing1();
+    }
+
+    // even better, because the logical operators are now aligned and the logical structure is more prominent and readable
+    if (
+        (foo === 123 || bar === "abc")
+        && doesItLookGoodWhenItBecomesThatLong()
+        && isThisReallyHappening()
+    ) {
+        thing1();
     }
 
     // good
     if (foo === 123 && bar === 'abc') {
-      thing1();
+        thing1();
     }
 
     // good
     if (
-      foo === 123 &&
-      bar === 'abc'
+        foo === 123 &&
+        bar === 'abc'
     ) {
-      thing1();
+        thing1();
     }
 
-    // good
+    // even better
     if (
-      foo === 123
-      && bar === 'abc'
+        foo === 123
+        && bar === 'abc'
     ) {
-      thing1();
+        thing1();
     }
     ```
 
@@ -2025,7 +1917,7 @@ Other Style Guides
 ## Comments
 
   <a name="comments--multiline"></a><a name="17.1"></a>
-  - [18.1](#comments--multiline) Use `/** ... */` for multi-line comments.
+  - [18.1](#comments--multiline) Prefer using `/** ... */` for multi-line comments. Use only `/** ... */` for JSDoc comments.
 
     ```javascript
     // bad
@@ -2036,21 +1928,41 @@ Other Style Guides
     // @return {Element} element
     function make(tag) {
 
-      // ...
+        // ...
 
-      return element;
+        return element;
     }
 
     // good
     /**
      * make() returns a new element
      * based on the passed-in tag name
+     * @param {String} tag
+     * @return {Element} element
      */
     function make(tag) {
 
-      // ...
+        // ...
 
-      return element;
+        return element;
+    }
+
+    // good
+    /**
+     * Returns the area of a triangle defined by 3 sides sizes.
+     * @param {Number} a
+     * @param {Number} b
+     * @param {Number} c
+     * @return {Number}
+     */
+    function triangleArea(a, b, c) {
+        let perimeter = a + b + c;
+        let halfPerimeter = perimeter / 2;
+        
+        // This statement is a geometric formula known as Heron's Formula.
+        // You should trust it, because it has a proof link:
+        // https://www.mathsisfun.com/geometry/herons-formula.html
+        return Math.sqrt(halfPerimeter * (halfPerimeter - a) * (halfPerimeter - b) * (halfPerimeter - c));
     }
     ```
 
@@ -2067,29 +1979,29 @@ Other Style Guides
 
     // bad
     function getType() {
-      console.log('fetching type...');
-      // set the default type to 'no type'
-      const type = this.type || 'no type';
+        console.log('fetching type...');
+        // set the default type to 'no type'
+        const type = this.type || 'no type';
 
-      return type;
+        return type;
     }
 
     // good
     function getType() {
-      console.log('fetching type...');
+        console.log('fetching type...');
 
-      // set the default type to 'no type'
-      const type = this.type || 'no type';
+        // set the default type to 'no type'
+        const type = this.type || 'no type';
 
-      return type;
+        return type;
     }
 
     // also good
     function getType() {
-      // set the default type to 'no type'
-      const type = this.type || 'no type';
+        // set the default type to 'no type'
+        const type = this.type || 'no type';
 
-      return type;
+        return type;
     }
     ```
 
@@ -2111,9 +2023,9 @@ Other Style Guides
      */
     function make(tag) {
 
-      // ...
+        // ...
 
-      return element;
+        return element;
     }
 
     // good
@@ -2123,9 +2035,9 @@ Other Style Guides
      */
     function make(tag) {
 
-      // ...
+        // ...
 
-      return element;
+        return element;
     }
     ```
 
@@ -2137,12 +2049,12 @@ Other Style Guides
 
     ```javascript
     class Calculator extends Abacus {
-      constructor() {
-        super();
+        constructor() {
+            super();
 
-        // FIXME: shouldn't use a global here
-        total = 0;
-      }
+            // FIXME: shouldn't use a global here
+            total = 0;
+        }
     }
     ```
 
@@ -2151,12 +2063,12 @@ Other Style Guides
 
     ```javascript
     class Calculator extends Abacus {
-      constructor() {
-        super();
+        constructor() {
+            super();
 
-        // TODO: total should be configurable by an options param
-        this.total = 0;
-      }
+            // TODO: total should be configurable by an options param
+            this.total = 0;
+        }
     }
     ```
 
@@ -2166,12 +2078,12 @@ Other Style Guides
 ## Whitespace
 
   <a name="whitespace--spaces"></a><a name="18.1"></a>
-  - [19.1](#whitespace--spaces) Use soft tabs (space character) set to 2 spaces. eslint: [`indent`](http://eslint.org/docs/rules/indent.html) jscs: [`validateIndentation`](http://jscs.info/rule/validateIndentation)
+  - [19.1](#whitespace--spaces) Use soft tabs (space character) set to 4 spaces. eslint: [`indent`](http://eslint.org/docs/rules/indent.html) jscs: [`validateIndentation`](http://jscs.info/rule/validateIndentation)
 
     ```javascript
     // bad
     function foo() {
-    ∙∙∙∙let name;
+    ∙∙let name;
     }
 
     // bad
@@ -2181,7 +2093,7 @@ Other Style Guides
 
     // good
     function baz() {
-    ∙∙let name;
+    ∙∙∙∙let name;
     }
     ```
 
@@ -2191,24 +2103,24 @@ Other Style Guides
     ```javascript
     // bad
     function test(){
-      console.log('test');
+        console.log('test');
     }
 
     // good
     function test() {
-      console.log('test');
+        console.log('test');
     }
 
     // bad
     dog.set('attr',{
-      age: '1 year',
-      breed: 'Bernese Mountain Dog',
+        age: '1 year',
+        breed: 'Bernese Mountain Dog',
     });
 
     // good
     dog.set('attr', {
-      age: '1 year',
-      breed: 'Bernese Mountain Dog',
+        age: '1 year',
+        breed: 'Bernese Mountain Dog',
     });
     ```
 
@@ -2218,22 +2130,22 @@ Other Style Guides
     ```javascript
     // bad
     if(isJedi) {
-      fight ();
+        fight ();
     }
 
     // good
     if (isJedi) {
-      fight();
+        fight();
     }
 
     // bad
     function fight () {
-      console.log ('Swooosh!');
+        console.log ('Swooosh!');
     }
 
     // good
     function fight() {
-      console.log('Swooosh!');
+        console.log('Swooosh!');
     }
     ```
 
@@ -2254,14 +2166,14 @@ Other Style Guides
     ```javascript
     // bad
     import { es6 } from './AirbnbStyleGuide';
-      // ...
+    // ...
     export default es6;
     ```
 
     ```javascript
     // bad
     import { es6 } from './AirbnbStyleGuide';
-      // ...
+    // ...
     export default es6;↵
     ↵
     ```
@@ -2269,7 +2181,7 @@ Other Style Guides
     ```javascript
     // good
     import { es6 } from './AirbnbStyleGuide';
-      // ...
+    // ...
     export default es6;↵
     ```
 
@@ -2283,19 +2195,19 @@ Other Style Guides
 
     // bad
     $('#items').
-      find('.selected').
-        highlight().
-        end().
-      find('.open').
-        updateCount();
+        find('.selected').
+            highlight().
+            end().
+        find('.open').
+            updateCount();
 
     // good
     $('#items')
-      .find('.selected')
-        .highlight()
-        .end()
-      .find('.open')
-        .updateCount();
+        .find('.selected')
+            .highlight()
+            .end()
+        .find('.open')
+            .updateCount();
 
     // bad
     const leds = stage.selectAll('.led').data(data).enter().append('svg:svg').classed('led', true)
@@ -2306,12 +2218,12 @@ Other Style Guides
     // good
     const leds = stage.selectAll('.led')
         .data(data)
-      .enter().append('svg:svg')
-        .classed('led', true)
-        .attr('width', (radius + margin) * 2)
-      .append('svg:g')
-        .attr('transform', `translate(${radius + margin},${radius + margin})`)
-        .call(tron.led);
+        .enter().append('svg:svg')
+            .classed('led', true)
+            .attr('width', (radius + margin) * 2)
+        .append('svg:g')
+            .attr('transform', `translate(${radius + margin},${radius + margin})`)
+            .call(tron.led);
 
     // good
     const leds = stage.selectAll('.led').data(data);
@@ -2323,53 +2235,53 @@ Other Style Guides
     ```javascript
     // bad
     if (foo) {
-      return bar;
+        return bar;
     }
     return baz;
 
     // good
     if (foo) {
-      return bar;
+        return bar;
     }
 
     return baz;
 
     // bad
     const obj = {
-      foo() {
-      },
-      bar() {
-      },
+        foo() {
+        },
+        bar() {
+        },
     };
     return obj;
 
     // good
     const obj = {
-      foo() {
-      },
+        foo() {
+        },
 
-      bar() {
-      },
+        bar() {
+        },
     };
 
     return obj;
 
     // bad
     const arr = [
-      function foo() {
-      },
-      function bar() {
-      },
+        function foo() {
+        },
+        function bar() {
+        },
     ];
     return arr;
 
     // good
     const arr = [
-      function foo() {
-      },
+        function foo() {
+        },
 
-      function bar() {
-      },
+        function bar() {
+        },
     ];
 
     return arr;
@@ -2382,29 +2294,29 @@ Other Style Guides
     // bad
     function bar() {
 
-      console.log(foo);
+        console.log(foo);
 
     }
 
     // also bad
     if (baz) {
 
-      console.log(qux);
+        console.log(qux);
     } else {
-      console.log(foo);
+        console.log(foo);
 
     }
 
     // good
     function bar() {
-      console.log(foo);
+        console.log(foo);
     }
 
     // good
     if (baz) {
-      console.log(qux);
+        console.log(qux);
     } else {
-      console.log(foo);
+        console.log(foo);
     }
     ```
 
@@ -2414,22 +2326,22 @@ Other Style Guides
     ```javascript
     // bad
     function bar( foo ) {
-      return foo;
+        return foo;
     }
 
     // good
     function bar(foo) {
-      return foo;
+        return foo;
     }
 
     // bad
     if ( foo ) {
-      console.log(foo);
+        console.log(foo);
     }
 
     // good
     if (foo) {
-      console.log(foo);
+        console.log(foo);
     }
     ```
 
@@ -2471,20 +2383,20 @@ Other Style Guides
 
     // good
     const foo = jsonData
-      && jsonData.foo
-      && jsonData.foo.bar
-      && jsonData.foo.bar.baz
-      && jsonData.foo.bar.baz.quux
-      && jsonData.foo.bar.baz.quux.xyzzy;
+        && jsonData.foo
+        && jsonData.foo.bar
+        && jsonData.foo.bar.baz
+        && jsonData.foo.bar.baz.quux
+        && jsonData.foo.bar.baz.quux.xyzzy;
 
     // good
     $.ajax({
-      method: 'POST',
-      url: 'https://airbnb.com/',
-      data: { name: 'John' },
+        method: 'POST',
+        url: 'https://airbnb.com/',
+        data: { name: 'John' },
     })
-      .done(() => console.log('Congratulations!'))
-      .fail(() => console.log('You have failed this city.'));
+        .done(() => console.log('Congratulations!'))
+        .fail(() => console.log('You have failed this city.'));
     ```
 
 **[⬆ back to top](#table-of-contents)**
@@ -2497,32 +2409,32 @@ Other Style Guides
     ```javascript
     // bad
     const story = [
-        once
-      , upon
-      , aTime
+          once
+        , upon
+        , aTime
     ];
 
     // good
     const story = [
-      once,
-      upon,
-      aTime,
+        once,
+        upon,
+        aTime,
     ];
 
     // bad
     const hero = {
-        firstName: 'Ada'
-      , lastName: 'Lovelace'
-      , birthYear: 1815
-      , superPower: 'computers'
+          firstName: 'Ada'
+        , lastName: 'Lovelace'
+        , birthYear: 1815
+        , superPower: 'computers'
     };
 
     // good
     const hero = {
-      firstName: 'Ada',
-      lastName: 'Lovelace',
-      birthYear: 1815,
-      superPower: 'computers',
+        firstName: 'Ada',
+        lastName: 'Lovelace',
+        birthYear: 1815,
+        superPower: 'computers',
     };
     ```
 
@@ -2551,74 +2463,74 @@ Other Style Guides
     ```javascript
     // bad
     const hero = {
-      firstName: 'Dana',
-      lastName: 'Scully'
+        firstName: 'Dana',
+        lastName: 'Scully'
     };
 
     const heroes = [
-      'Batman',
-      'Superman'
+        'Batman',
+        'Superman'
     ];
 
     // good
     const hero = {
-      firstName: 'Dana',
-      lastName: 'Scully',
+        firstName: 'Dana',
+        lastName: 'Scully',
     };
 
     const heroes = [
-      'Batman',
-      'Superman',
+        'Batman',
+        'Superman',
     ];
 
     // bad
     function createHero(
-      firstName,
-      lastName,
-      inventorOf
+        firstName,
+        lastName,
+        inventorOf
     ) {
-      // does nothing
+        // does nothing
     }
 
     // good
     function createHero(
-      firstName,
-      lastName,
-      inventorOf,
+        firstName,
+        lastName,
+        inventorOf,
     ) {
-      // does nothing
+        // does nothing
     }
 
     // good (note that a comma must not appear after a "rest" element)
     function createHero(
-      firstName,
-      lastName,
-      inventorOf,
-      ...heroArgs
+        firstName,
+        lastName,
+        inventorOf,
+        ...heroArgs
     ) {
-      // does nothing
+        // does nothing
     }
 
     // bad
     createHero(
-      firstName,
-      lastName,
-      inventorOf
+        firstName,
+        lastName,
+        inventorOf
     );
 
     // good
     createHero(
-      firstName,
-      lastName,
-      inventorOf,
+        firstName,
+        lastName,
+        inventorOf,
     );
 
     // good (note that a comma must not appear after a "rest" element)
     createHero(
-      firstName,
-      lastName,
-      inventorOf,
-      ...heroArgs
+        firstName,
+        lastName,
+        inventorOf,
+        ...heroArgs
     );
     ```
 
@@ -2633,20 +2545,20 @@ Other Style Guides
     ```javascript
     // bad
     (function () {
-      const name = 'Skywalker'
-      return name
+        const name = 'Skywalker'
+        return name
     })()
 
     // good
     (function () {
-      const name = 'Skywalker';
-      return name;
+        const name = 'Skywalker';
+        return name;
     }());
 
     // good, but legacy (guards against the function becoming an argument when two files with IIFEs are concatenated)
     ;((() => {
-      const name = 'Skywalker';
-      return name;
+        const name = 'Skywalker';
+        return name;
     })());
     ```
 
@@ -2750,12 +2662,12 @@ Other Style Guides
     ```javascript
     // bad
     function q() {
-      // ...
+        // ...
     }
 
     // good
     function query() {
-      // ...
+        // ...
     }
     ```
 
@@ -2779,22 +2691,22 @@ Other Style Guides
     ```javascript
     // bad
     function user(options) {
-      this.name = options.name;
+        this.name = options.name;
     }
 
     const bad = new user({
-      name: 'nope',
+        name: 'nope',
     });
 
     // good
     class User {
-      constructor(options) {
-        this.name = options.name;
-      }
+        constructor(options) {
+            this.name = options.name;
+        }
     }
 
     const good = new User({
-      name: 'yup',
+        name: 'yup',
     });
     ```
 
@@ -2819,25 +2731,25 @@ Other Style Guides
     ```javascript
     // bad
     function foo() {
-      const self = this;
-      return function () {
-        console.log(self);
-      };
+        const self = this;
+        return function () {
+            console.log(self);
+        };
     }
 
     // bad
     function foo() {
-      const that = this;
-      return function () {
-        console.log(that);
-      };
+        const that = this;
+        return function () {
+            console.log(that);
+        };
     }
 
     // good
     function foo() {
-      return () => {
-        console.log(this);
-      };
+        return () => {
+            console.log(this);
+        };
     }
     ```
 
@@ -2847,7 +2759,7 @@ Other Style Guides
     ```javascript
     // file 1 contents
     class CheckBox {
-      // ...
+        // ...
     }
     export default CheckBox;
 
@@ -2882,7 +2794,7 @@ Other Style Guides
 
     ```javascript
     function makeStyleGuide() {
-      // ...
+        // ...
     }
 
     export default makeStyleGuide;
@@ -2893,41 +2805,39 @@ Other Style Guides
 
     ```javascript
     const AirbnbStyleGuide = {
-      es6: {
-      },
+        es6: {
+        },
     };
 
     export default AirbnbStyleGuide;
     ```
 
   <a name="naming--Acronyms-and-Initialisms"></a>
-  - [23.9](#naming--Acronyms-and-Initialisms) Acronyms and initialisms should always be all capitalized, or all lowercased.
+  - [23.9](#naming--Acronyms-and-Initialisms) Acronyms and initialisms should never be all capitalized, follow the general naming rule.
 
-    > Why? Names are for readability, not to appease a computer algorithm.
+    > Why? To avoid mistyping the case of any identifier, we should use consistent rules, as not every acronym is well known, and it gets especially messy when they follow one another.
 
     ```javascript
-    // bad
-    import SmsContainer from './containers/SmsContainer';
-
-    // bad
-    const HttpRequests = [
-      // ...
-    ];
+    // super bad
+    import SMSWSDLService from './containers/SMSWSDLService';
 
     // good
+    import SmsWsdlService from './containers/SmsWsdlService';
+
+    // bad
     import SMSContainer from './containers/SMSContainer';
 
     // good
+    import SmsContainer from './containers/SmsContainer';
+
+    // bad
     const HTTPRequests = [
-      // ...
+        // ...
     ];
 
-    // best
-    import TextMessageContainer from './containers/TextMessageContainer';
-
-    // best
-    const Requests = [
-      // ...
+    // good
+    const HttpRequests = [
+        // ...
     ];
     ```
 
@@ -2945,24 +2855,24 @@ Other Style Guides
     ```javascript
     // bad
     class Dragon {
-      get age() {
-        // ...
-      }
+        get age() {
+            // ...
+        }
 
-      set age(value) {
-        // ...
-      }
+        set age(value) {
+            // ...
+        }
     }
 
     // good
     class Dragon {
-      getAge() {
-        // ...
-      }
+        getAge() {
+            // ...
+        }
 
-      setAge(value) {
-        // ...
-      }
+        setAge(value) {
+            // ...
+        }
     }
     ```
 
@@ -2972,12 +2882,12 @@ Other Style Guides
     ```javascript
     // bad
     if (!dragon.age()) {
-      return false;
+        return false;
     }
 
     // good
     if (!dragon.hasAge()) {
-      return false;
+        return false;
     }
     ```
 
@@ -2986,18 +2896,18 @@ Other Style Guides
 
     ```javascript
     class Jedi {
-      constructor(options = {}) {
-        const lightsaber = options.lightsaber || 'blue';
-        this.set('lightsaber', lightsaber);
-      }
+        constructor(options = {}) {
+            const lightsaber = options.lightsaber || 'blue';
+            this.set('lightsaber', lightsaber);
+        }
 
-      set(key, val) {
-        this[key] = val;
-      }
+        set(key, val) {
+            this[key] = val;
+        }
 
-      get(key) {
-        return this[key];
-      }
+        get(key) {
+            return this[key];
+        }
     }
     ```
 
@@ -3016,7 +2926,7 @@ Other Style Guides
     // ...
 
     $(this).on('listingUpdated', (e, listingId) => {
-      // do something with listingId
+        // do something with listingId
     });
     ```
 
@@ -3029,7 +2939,7 @@ Other Style Guides
     // ...
 
     $(this).on('listingUpdated', (e, data) => {
-      // do something with data.listingId
+        // do something with data.listingId
     });
     ```
 
@@ -3058,25 +2968,25 @@ Other Style Guides
     ```javascript
     // bad
     function setSidebar() {
-      $('.sidebar').hide();
+        $('.sidebar').hide();
 
-      // ...
+        // ...
 
-      $('.sidebar').css({
-        'background-color': 'pink',
-      });
+        $('.sidebar').css({
+            'background-color': 'pink',
+        });
     }
 
     // good
     function setSidebar() {
-      const $sidebar = $('.sidebar');
-      $sidebar.hide();
+        const $sidebar = $('.sidebar');
+        $sidebar.hide();
 
-      // ...
+        // ...
 
-      $sidebar.css({
-        'background-color': 'pink',
-      });
+        $sidebar.css({
+            'background-color': 'pink',
+        });
     }
     ```
 
@@ -3147,7 +3057,7 @@ Other Style Guides
 
     ```javascript
     function foo() {
-      return true;
+        return true;
     }
     ```
 
@@ -3259,162 +3169,5 @@ Other Style Guides
 
 
 **[⬆ back to top](#table-of-contents)**
-
-## In the Wild
-
-  This is a list of organizations that are using this style guide. Send us a pull request and we'll add you to the list.
-
-  - **3blades**: [3Blades/javascript](https://github.com/3blades/javascript)
-  - **4Catalyzer**: [4Catalyzer/javascript](https://github.com/4Catalyzer/javascript)
-  - **Aan Zee**: [AanZee/javascript](https://github.com/AanZee/javascript)
-  - **Adult Swim**: [adult-swim/javascript](https://github.com/adult-swim/javascript)
-  - **Airbnb**: [airbnb/javascript](https://github.com/airbnb/javascript)
-  - **AltSchool**: [AltSchool/javascript](https://github.com/AltSchool/javascript)
-  - **Apartmint**: [apartmint/javascript](https://github.com/apartmint/javascript)
-  - **Ascribe**: [ascribe/javascript](https://github.com/ascribe/javascript)
-  - **Avalara**: [avalara/javascript](https://github.com/avalara/javascript)
-  - **Avant**: [avantcredit/javascript](https://github.com/avantcredit/javascript)
-  - **Axept**: [axept/javascript](https://github.com/axept/javascript)
-  - **BashPros**: [BashPros/javascript](https://github.com/BashPros/javascript)
-  - **Billabong**: [billabong/javascript](https://github.com/billabong/javascript)
-  - **Bisk**: [bisk/javascript](https://github.com/Bisk/javascript/)
-  - **Bonhomme**: [bonhommeparis/javascript](https://github.com/bonhommeparis/javascript)
-  - **Brainshark**: [brainshark/javascript](https://github.com/brainshark/javascript)
-  - **CaseNine**: [CaseNine/javascript](https://github.com/CaseNine/javascript)
-  - **Chartboost**: [ChartBoost/javascript-style-guide](https://github.com/ChartBoost/javascript-style-guide)
-  - **ComparaOnline**: [comparaonline/javascript](https://github.com/comparaonline/javascript-style-guide)
-  - **Compass Learning**: [compasslearning/javascript-style-guide](https://github.com/compasslearning/javascript-style-guide)
-  - **DailyMotion**: [dailymotion/javascript](https://github.com/dailymotion/javascript)
-  - **DoSomething**: [DoSomething/eslint-config](https://github.com/DoSomething/eslint-config)
-  - **Digitpaint** [digitpaint/javascript](https://github.com/digitpaint/javascript)
-  - **Ecosia**: [ecosia/javascript](https://github.com/ecosia/javascript)
-  - **Evernote**: [evernote/javascript-style-guide](https://github.com/evernote/javascript-style-guide)
-  - **Evolution Gaming**: [evolution-gaming/javascript](https://github.com/evolution-gaming/javascript)
-  - **EvozonJs**: [evozonjs/javascript](https://github.com/evozonjs/javascript)
-  - **ExactTarget**: [ExactTarget/javascript](https://github.com/ExactTarget/javascript)
-  - **Expensify** [Expensify/Style-Guide](https://github.com/Expensify/Style-Guide/blob/master/javascript.md)
-  - **Flexberry**: [Flexberry/javascript-style-guide](https://github.com/Flexberry/javascript-style-guide)
-  - **Gawker Media**: [gawkermedia/javascript](https://github.com/gawkermedia/javascript)
-  - **General Electric**: [GeneralElectric/javascript](https://github.com/GeneralElectric/javascript)
-  - **Generation Tux**: [GenerationTux/javascript](https://github.com/generationtux/styleguide)
-  - **GoodData**: [gooddata/gdc-js-style](https://github.com/gooddata/gdc-js-style)
-  - **Grooveshark**: [grooveshark/javascript](https://github.com/grooveshark/javascript)
-  - **Honey**: [honeyscience/javascript](https://github.com/honeyscience/javascript)
-  - **How About We**: [howaboutwe/javascript](https://github.com/howaboutwe/javascript-style-guide)
-  - **Huballin**: [huballin/javascript](https://github.com/huballin/javascript)
-  - **HubSpot**: [HubSpot/javascript](https://github.com/HubSpot/javascript)
-  - **Hyper**: [hyperoslo/javascript-playbook](https://github.com/hyperoslo/javascript-playbook/blob/master/style.md)
-  - **InterCity Group**: [intercitygroup/javascript-style-guide](https://github.com/intercitygroup/javascript-style-guide)
-  - **Jam3**: [Jam3/Javascript-Code-Conventions](https://github.com/Jam3/Javascript-Code-Conventions)
-  - **JeopardyBot**: [kesne/jeopardy-bot](https://github.com/kesne/jeopardy-bot/blob/master/STYLEGUIDE.md)
-  - **JSSolutions**: [JSSolutions/javascript](https://github.com/JSSolutions/javascript)
-  - **KickorStick**: [kickorstick/javascript](https://github.com/kickorstick/javascript)
-  - **Kinetica Solutions**: [kinetica/javascript](https://github.com/kinetica/Javascript-style-guide)
-  - **Lonely Planet**: [lonelyplanet/javascript](https://github.com/lonelyplanet/javascript)
-  - **M2GEN**: [M2GEN/javascript](https://github.com/M2GEN/javascript)
-  - **Mighty Spring**: [mightyspring/javascript](https://github.com/mightyspring/javascript)
-  - **MinnPost**: [MinnPost/javascript](https://github.com/MinnPost/javascript)
-  - **MitocGroup**: [MitocGroup/javascript](https://github.com/MitocGroup/javascript)
-  - **ModCloth**: [modcloth/javascript](https://github.com/modcloth/javascript)
-  - **Money Advice Service**: [moneyadviceservice/javascript](https://github.com/moneyadviceservice/javascript)
-  - **Muber**: [muber/javascript](https://github.com/muber/javascript)
-  - **National Geographic**: [natgeo/javascript](https://github.com/natgeo/javascript)
-  - **Nimbl3**: [nimbl3/javascript](https://github.com/nimbl3/javascript)
-  - **Nulogy**: [nulogy/javascript](https://github.com/nulogy/javascript)
-  - **Orange Hill Development**: [orangehill/javascript](https://github.com/orangehill/javascript)
-  - **Orion Health**: [orionhealth/javascript](https://github.com/orionhealth/javascript)
-  - **OutBoxSoft**: [OutBoxSoft/javascript](https://github.com/OutBoxSoft/javascript)
-  - **Peerby**: [Peerby/javascript](https://github.com/Peerby/javascript)
-  - **Razorfish**: [razorfish/javascript-style-guide](https://github.com/razorfish/javascript-style-guide)
-  - **reddit**: [reddit/styleguide/javascript](https://github.com/reddit/styleguide/tree/master/javascript)
-  - **React**: [facebook.github.io/react/contributing/how-to-contribute.html#style-guide](https://facebook.github.io/react/contributing/how-to-contribute.html#style-guide)
-  - **REI**: [reidev/js-style-guide](https://github.com/rei/code-style-guides/blob/master/docs/javascript.md)
-  - **Ripple**: [ripple/javascript-style-guide](https://github.com/ripple/javascript-style-guide)
-  - **SeekingAlpha**: [seekingalpha/javascript-style-guide](https://github.com/seekingalpha/javascript-style-guide)
-  - **Shutterfly**: [shutterfly/javascript](https://github.com/shutterfly/javascript)
-  - **Sourcetoad**: [sourcetoad/javascript](https://github.com/sourcetoad/javascript)
-  - **Springload**: [springload/javascript](https://github.com/springload/javascript)
-  - **StratoDem Analytics**: [stratodem/javascript](https://github.com/stratodem/javascript)
-  - **SteelKiwi Development**: [steelkiwi/javascript](https://github.com/steelkiwi/javascript)
-  - **StudentSphere**: [studentsphere/javascript](https://github.com/studentsphere/guide-javascript)
-  - **SwoopApp**: [swoopapp/javascript](https://github.com/swoopapp/javascript)
-  - **SysGarage**: [sysgarage/javascript-style-guide](https://github.com/sysgarage/javascript-style-guide)
-  - **Syzygy Warsaw**: [syzygypl/javascript](https://github.com/syzygypl/javascript)
-  - **Target**: [target/javascript](https://github.com/target/javascript)
-  - **TheLadders**: [TheLadders/javascript](https://github.com/TheLadders/javascript)
-  - **The Nerdery**: [thenerdery/javascript-standards](https://github.com/thenerdery/javascript-standards)
-  - **T4R Technology**: [T4R-Technology/javascript](https://github.com/T4R-Technology/javascript)
-  - **VoxFeed**: [VoxFeed/javascript-style-guide](https://github.com/VoxFeed/javascript-style-guide)
-  - **WeBox Studio**: [weboxstudio/javascript](https://github.com/weboxstudio/javascript)
-  - **Weggo**: [Weggo/javascript](https://github.com/Weggo/javascript)
-  - **Zillow**: [zillow/javascript](https://github.com/zillow/javascript)
-  - **ZocDoc**: [ZocDoc/javascript](https://github.com/ZocDoc/javascript)
-
-**[⬆ back to top](#table-of-contents)**
-
-## Translation
-
-  This style guide is also available in other languages:
-
-  - ![br](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Brazil.png) **Brazilian Portuguese**: [armoucar/javascript-style-guide](https://github.com/armoucar/javascript-style-guide)
-  - ![bg](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Bulgaria.png) **Bulgarian**: [borislavvv/javascript](https://github.com/borislavvv/javascript)
-  - ![ca](https://raw.githubusercontent.com/fpmweb/javascript-style-guide/master/img/catala.png) **Catalan**: [fpmweb/javascript-style-guide](https://github.com/fpmweb/javascript-style-guide)
-  - ![cn](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/China.png) **Chinese (Simplified)**: [sivan/javascript-style-guide](https://github.com/sivan/javascript-style-guide)
-  - ![tw](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Taiwan.png) **Chinese (Traditional)**: [jigsawye/javascript](https://github.com/jigsawye/javascript)
-  - ![fr](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/France.png) **French**: [nmussy/javascript-style-guide](https://github.com/nmussy/javascript-style-guide)
-  - ![de](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Germany.png) **German**: [timofurrer/javascript-style-guide](https://github.com/timofurrer/javascript-style-guide)
-  - ![it](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Italy.png) **Italian**: [sinkswim/javascript-style-guide](https://github.com/sinkswim/javascript-style-guide)
-  - ![jp](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Japan.png) **Japanese**: [mitsuruog/javascript-style-guide](https://github.com/mitsuruog/javascript-style-guide)
-  - ![kr](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/South-Korea.png) **Korean**: [tipjs/javascript-style-guide](https://github.com/tipjs/javascript-style-guide)
-  - ![pl](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Poland.png) **Polish**: [mjurczyk/javascript](https://github.com/mjurczyk/javascript)
-  - ![ru](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Russia.png) **Russian**: [leonidlebedev/javascript-airbnb](https://github.com/leonidlebedev/javascript-airbnb)
-  - ![es](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Spain.png) **Spanish**: [paolocarrasco/javascript-style-guide](https://github.com/paolocarrasco/javascript-style-guide)
-  - ![th](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Thailand.png) **Thai**: [lvarayut/javascript-style-guide](https://github.com/lvarayut/javascript-style-guide)
-  - ![ua](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Ukraine.png) **Ukrainian**: [ivanzusko/javascript](https://github.com/ivanzusko/javascript)
-  - ![vn](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Vietnam.png) **Vietnam**: [hngiang/javascript-style-guide](https://github.com/hngiang/javascript-style-guide)
-
-## The JavaScript Style Guide Guide
-
-  - [Reference](https://github.com/airbnb/javascript/wiki/The-JavaScript-Style-Guide-Guide)
-
-## Chat With Us About JavaScript
-
-  - Find us on [gitter](https://gitter.im/airbnb/javascript).
-
-## Contributors
-
-  - [View Contributors](https://github.com/airbnb/javascript/graphs/contributors)
-
-
-## License
-
-(The MIT License)
-
-Copyright (c) 2014-2017 Airbnb
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-**[⬆ back to top](#table-of-contents)**
-
-## Amendments
-
-We encourage you to fork this guide and change the rules to fit your team's style guide. Below, you may list some amendments to the style guide. This allows you to periodically update your style guide without having to deal with merge conflicts.
 
 # };
